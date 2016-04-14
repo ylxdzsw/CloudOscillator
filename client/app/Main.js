@@ -7,9 +7,14 @@ class Main extends React.Component {
         this.state = {}
     }
 
+    play() {
+        const fuck = new Wad({source: '//localhost:3001/v1/files/0'})
+        fuck.play({env: fuck.env})
+    }
+
     render() {
         return (
-            <div>
+            <div onClick={this.play}>
                 Hello World
             </div>
         )

@@ -7,7 +7,8 @@ const TransferWebpackPlugin = require('transfer-webpack-plugin')
 const config = {
   entry: [path.join(__dirname, 'app/app.js')],
   resolve: {
-    extensions: ["", ".js"]
+    extensions: ["", ".js"],
+    node_modules: ["node_modules"]
   },
   devtool: 'source-map',
   output: {
@@ -23,7 +24,7 @@ const config = {
     new webpack.NoErrorsPlugin(),
     new TransferWebpackPlugin([
       {from: 'www'}
-    ], path.resolve(__dirname,"src"))
+    ], __dirname)
   ],
   module: {
     loaders: [

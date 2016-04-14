@@ -11,7 +11,8 @@ const config = {
     path.join(__dirname, 'app/app.js')
   ],
   resolve: {
-    extensions: ["", ".js"]
+    extensions: ["", ".js"],
+    node_modules: ["node_modules"]
   },
   devServer:{
     contentBase: 'www',
