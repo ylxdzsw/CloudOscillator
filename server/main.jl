@@ -3,6 +3,7 @@ using HttpServer
 
 module config include("config.jl") end
 module utils  include("utils.jl") end
+module model  include("model/index.jl") end
 module v1     include("v1/index.jl") end
 
 @resource cloudoscillator begin

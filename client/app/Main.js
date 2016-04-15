@@ -1,4 +1,5 @@
 import React from 'react'
+import {stop} from './utils.js'
 
 class Main extends React.Component {
     constructor(props, context) {
@@ -7,14 +8,28 @@ class Main extends React.Component {
         this.state = {}
     }
 
-    play() {
-        const fuck = new Wad({source: '//localhost:3001/v1/files/0'})
-        fuck.play({env: fuck.env})
+    dropHandler(e) {
+        stop(e)
+        if(!e.dataTransfer.files) return
+
+        window.file = e.dataTransfer.files[0]
+        const reader = new FileReader()
+
+        $.ajax({
+            url: v1`info`, method: 'POST', data: JSON.stringify({filename: file.name}),
+            //processData: false, contentType: false
+        }).done((data) => {
+            console.log(data)
+        })
+
     }
 
     render() {
         return (
-            <div onClick={this.play}>
+            <div
+                onDragEnter={stop}
+                onDragOver={stop}
+                onDrop={this.dropHandler}>
                 Hello World
             </div>
         )

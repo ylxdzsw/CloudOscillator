@@ -1,10 +1,8 @@
 using Restful
 using HttpServer
-using HDF5
-using ..config
+import ..config
+using ..model
 using ..utils
-
-db = h5open("../pool/metadata.h5", "r+")
 
 @resource root begin
     :name => "v1"
@@ -13,5 +11,5 @@ db = h5open("../pool/metadata.h5", "r+")
     :mixin => [defaultmixin]
 end
 
-include("files.jl")
+include("blobs.jl")
 include("info.jl")
