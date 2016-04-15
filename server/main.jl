@@ -13,3 +13,4 @@ Restful.addsubresource!(cloudoscillator, v1.root)
 
 @async run(Server(cloudoscillator), host=config.host, port=config.port)
 
+isinteractive() || wait()

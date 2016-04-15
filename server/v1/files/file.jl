@@ -1,4 +1,4 @@
-@resource file <: files begin
+@resource files_file <: files begin
     :name => "file"
     :route => "*"
     :mixin => [defaultmixin]

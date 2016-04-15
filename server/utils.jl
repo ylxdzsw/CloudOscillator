@@ -11,3 +11,7 @@ json(next, r::Resource, req, id) = begin
 end
 
 cors(r::Resource, req, id, res) = res.headers["Access-Control-Allow-Origin"] = "*"
+
+export unsub
+
+unsub{T}(x::SubString{T}) = T(x)
