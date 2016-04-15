@@ -3,13 +3,15 @@
     :route => "info"
     :mixin => [defaultmixin]
 
+    "get all infomations about a music specified by ?music=:id"
     :GET | json => let
         id = req[:query]["music"] |> unsub
-        read(db["info"][id])
+        get("info/$id")
     end
 
+    "create a new music, returns the id"
     :POST | json => let
-        id = model.new(req[:body])
+        id = create_music(req[:body])
         Dict(:id => id)
     end
 end

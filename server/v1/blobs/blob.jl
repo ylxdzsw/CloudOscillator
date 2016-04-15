@@ -3,11 +3,17 @@
     :route => "*"
     :mixin => [defaultmixin]
 
+    "download a music file"
     :GET => begin
-        db["blob/$id"] |> read
+        try
+            get("blob/$id")
+        catch
+            404
+        end
     end
 
+    "upload a new music file without any associated infomation"
     :PUT => let
-        db["blob/$id"] = req[:body]
+        set("blob/$id", req[:body])
     end
 end

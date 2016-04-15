@@ -1,20 +1,34 @@
 using HDF5
 import ..config
+using ..utils
 
-export db, read
+export create_music, get, set
 
-function init()
-    db = h5open(config.database, "w")
-    db["meta/num_music"] = 0
-    db["meta/next_id"]   = 0
-    db["meta/allmusic"]  = ASCIIString[]
+db = h5open(config.database, isfile(config.database) ? "r+" : "w")
+
+function get(key::ByteString)
+    db[key] |> read
 end
 
-db = isfile(config.database) ? h5open(config.database, "r+") : init()
+function set(key::ByteString, v)
+    exists(db, key) && o_delete(db, key)
+    db[key] = v
+end
 
-function new(x::Dict)
-    id = db["meta/next_id"] |> read
-    o_delete(db, "meta/next_id")
-    db["meta/next_id"] = id + 1
+function set(key::ByteString, f::Function, default)
+    ori = exists(db, key) ? get(key) : default
+    set(key, f(ori))
+end
+
+function create_music(x::Dict)
+    id = set("meta/next_id", add(1), 0) - 1
+    set("meta/num_music", add(1), 0)
+    set("meta/allmusic", x->push!(x,id), Int64[])
+
+    db["info/$id/origin_filename"] = x["filename"]
+    db["info/$id/name"] = splitext(x["filename"])[1]
+    db["info/$id/mime"] = splitext(x["filename"])[2] |> matchmime
+    db["info/$id/upload_time"] = now() |> string
+
     id
 end

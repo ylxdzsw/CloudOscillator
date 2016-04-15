@@ -6,20 +6,31 @@ class Main extends React.Component {
         super(props, context)
 
         this.state = {}
+
+        this.dropHandler = this.dropHandler.bind(this)
+    }
+
+    upload(id, file) {
+        $.ajax({
+            url: v1`blobs/`+id, method: 'PUT', data: file,
+            processData: false, contentType: false
+        }).done((data) => {
+            console.log(data)
+        })
     }
 
     dropHandler(e) {
         stop(e)
         if(!e.dataTransfer.files) return
 
-        window.file = e.dataTransfer.files[0]
+        const file = e.dataTransfer.files[0]
         const reader = new FileReader()
 
         $.ajax({
-            url: v1`info`, method: 'POST', data: JSON.stringify({filename: file.name}),
-            //processData: false, contentType: false
+            url: v1`info`, method: 'POST', contentType: 'application/json',
+            data: JSON.stringify({filename: file.name})
         }).done((data) => {
-            console.log(data)
+            this.upload(data.id, file)
         })
 
     }

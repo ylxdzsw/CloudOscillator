@@ -18,7 +18,7 @@ cors(r::Resource, req, id, res) = begin
     ACRH = "Access-Control-Request-Headers"
     ACAH = "Access-Control-Allow-Headers"
     ACRM = "Access-Control-Request-Method"
-    ACAM = "Access-Control-Allow-Method"
+    ACAM = "Access-Control-Allow-Methods"
     res.headers[ACAO] = "*"
     if haskey(req[:headers], ACRH)
         res.headers[ACAH] = req[:headers][ACRH]
@@ -28,6 +28,22 @@ cors(r::Resource, req, id, res) = begin
     end
 end
 
-export unsub
+export unsub, add
 
 unsub{T}(x::SubString{T}) = T(x)
+
+add(i) = x -> x + i
+
+export matchmime
+
+mimedict = Dict(".mp3" => "audio/mpeg",
+                ".wma" => "audio/x-ms-wma",
+                ".ogg" => "audio/ogg",
+                ".oga" => "audio/ogg",
+                ".ra"  => "audio/x-pn-realaudio",
+                ".midi"=> "audio/midi",
+                ".mid" => "audio/midi",
+                ".aac" => "audio/x-aac",
+                ".flac"=> "audio/x-flac",
+                ".wav" => "audio/x-wav")
+matchmime(ext) = haskey(mimedict, ext) ? mimedict[ext] : ""
